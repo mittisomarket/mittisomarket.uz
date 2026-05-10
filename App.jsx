@@ -12,15 +12,21 @@ import Mahsulotlar from './components/Mahsulotlar';
 import News from './components/News';
 import Login from './components/Login';
 import Sozlamalar from './components/Sozlamalar';
+import Kassa from './components/Kassa';
 
 export default function App() {
   const [tab, setTab] = useState('ASOSIY');
   const [userRole, setUserRole] = useState(localStorage.getItem('userRole') || null);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+  const [designStyle, setDesignStyle] = useState(localStorage.getItem('designStyle') || 'minimalist');
+  const [layoutStyle, setLayoutStyle] = useState(localStorage.getItem('layoutStyle') || 'default');
+  const [lang, setLang] = useState('uz_latn');
   
   // Data States
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
   const [sales, setSales] = useState([]);
+  const [expenses, setExpenses] = useState([]);
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,12 +45,14 @@ export default function App() {
         setCustomers(data.customers || []);
         setProducts(data.products || []);
         setSales(data.sales || []);
+        setExpenses(data.expenses || []);
         setNews(data.news || []);
       } else {
         // Agar baza bo'sh bo'lsa, boshlang'ich ma'lumotlarni yuklash
         setCustomers(initialCustomers);
         setProducts(initialProducts);
         setSales(initialSales);
+        setExpenses([]);
         setNews(initialNews);
       }
       setLoading(false);
@@ -54,6 +62,7 @@ export default function App() {
       setCustomers(initialCustomers);
       setProducts(initialProducts);
       setSales(initialSales);
+      setExpenses([]);
       setNews(initialNews);
       setLoading(false);
     });
@@ -64,6 +73,7 @@ export default function App() {
         setCustomers(initialCustomers);
         setProducts(initialProducts);
         setSales(initialSales);
+        setExpenses([]);
         setNews(initialNews);
         setLoading(false);
       }
@@ -76,12 +86,13 @@ export default function App() {
   }, []);
 
   // 2. Bulutga saqlash funksiyasi
-  const saveToCloud = async (c, p, s, n) => {
+  const saveToCloud = async (c, p, s, e, n) => {
     try {
       await setDoc(doc(db, "mittiso_data", "global"), {
         customers: c,
         products: p,
         sales: s,
+        expenses: e,
         news: n
       });
     } catch (e) {
@@ -92,9 +103,16 @@ export default function App() {
   // 3. State o'zgarganda bulutga yuborish
   useEffect(() => {
     if (!loading) {
-      saveToCloud(customers, products, sales, news);
+      saveToCloud(customers, products, sales, expenses, news);
     }
-  }, [customers, products, sales, news, loading]);
+  }, [customers, products, sales, expenses, news, loading]);
+  
+  useEffect(() => {
+    document.body.className = `${theme} ${designStyle} layout-${layoutStyle}`;
+    localStorage.setItem('theme', theme);
+    localStorage.setItem('designStyle', designStyle);
+    localStorage.setItem('layoutStyle', layoutStyle);
+  }, [theme, designStyle, layoutStyle]);
 
   const handleLogin = (role) => {
     setUserRole(role);
@@ -121,7 +139,7 @@ export default function App() {
         <div className="header-top">
           <div className="logo">MITTISO</div>
           <div className="user-badge" onClick={handleLogout}>
-            {userRole === 'admin' ? 'Admin' : 'Sotuvchi'} 🚪
+            {userRole === 'admin' ? 'Diler Ozodjon' : 'Sotuvchi'} 🚪
           </div>
         </div>
       </header>
@@ -130,10 +148,24 @@ export default function App() {
         {tab === 'ASOSIY' && <Asosiy products={products} news={news} userRole={userRole} onDelete={handleDeleteProduct} />}
         {tab === 'MIJOZLAR' && <Mijozlar customers={customers} setCustomers={setCustomers} sales={sales} userRole={userRole} />}
         {tab === 'SAVDOLAR' && <Savdolar sales={sales} products={products} customers={customers} onAddSale={(s) => setSales([s, ...sales])} userRole={userRole} />}
-        {tab === 'STATISTIKA' && userRole === 'admin' && <Statistika customers={customers} sales={sales} />}
+        {tab === 'STATISTIKA' && userRole === 'admin' && <Statistika customers={customers} sales={sales} expenses={expenses} />}
+        {tab === 'KASSA' && userRole === 'admin' && <Kassa sales={sales} expenses={expenses} setExpenses={setExpenses} />}
         {tab === 'MAHSULOTLAR' && userRole === 'admin' && <Mahsulotlar products={products} setProducts={setProducts} />}
         {tab === 'NEWS' && <News news={news} setNews={setNews} userRole={userRole} />}
-        {tab === 'SOZLAMALAR' && <Sozlamalar onLogout={handleLogout} userRole={userRole} />}
+        {tab === 'SOZLAMALAR' && (
+          <Sozlamalar 
+            onLogout={handleLogout} 
+            userRole={userRole} 
+            theme={theme} 
+            setTheme={setTheme}
+            designStyle={designStyle}
+            setDesignStyle={setDesignStyle}
+            layoutStyle={layoutStyle}
+            setLayoutStyle={setLayoutStyle}
+            lang={lang}
+            setLang={setLang}
+          />
+        )}
       </main>
 
       <nav className="bottom-nav">
@@ -157,6 +189,12 @@ export default function App() {
           <div className={`nav-item ${tab === 'STATISTIKA' ? 'active' : ''}`} onClick={() => setTab('STATISTIKA')}>
             <div className="nav-icon">📊</div>
             <div className="nav-label">Statistika</div>
+          </div>
+        )}
+        {userRole === 'admin' && (
+          <div className={`nav-item ${tab === 'KASSA' ? 'active' : ''}`} onClick={() => setTab('KASSA')}>
+            <div className="nav-icon">💰</div>
+            <div className="nav-label">Kassa</div>
           </div>
         )}
         <div className={`nav-item ${tab === 'SOZLAMALAR' ? 'active' : ''}`} onClick={() => setTab('SOZLAMALAR')}>

@@ -6,36 +6,12 @@ export const initialCustomers = [
 
 export const initialProducts = [
   { 
-    id: 'PROD-001', 
-    name: 'iPhone 15 Pro Max', 
-    price: 15000000, 
-    qoldiq: 10, 
-    tavsif: '256GB, Natural Titanium. Eng yangi flagman telefon.', 
-    image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400' 
-  },
-  { 
-    id: 'PROD-002', 
-    name: 'MacBook Air M2', 
-    price: 12000000, 
-    qoldiq: 3, 
-    tavsif: '8/256GB, Space Gray. Yengil va kuchli noutbuk.', 
-    image: 'https://images.unsplash.com/photo-1611186871348-b1ec696e523b?w=400' 
-  },
-  { 
-    id: 'PROD-003', 
-    name: 'Samsung Galaxy S23 Ultra', 
-    price: 13000000, 
-    qoldiq: 7, 
-    tavsif: '512GB, Green. Zo\'r kamera va displey.', 
-    image: 'https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=400' 
-  },
-  { 
-    id: 'PROD-004', 
-    name: 'AirPods Pro 2', 
-    price: 3000000, 
-    qoldiq: 15, 
-    tavsif: 'Shovqinni bosuvchi simsiz quloqchinlar.', 
-    image: 'https://images.unsplash.com/photo-1588423770574-9102111d4194?w=400' 
+    id: 'PROD-MITTISO-001', 
+    name: 'Mittiso Pampers', 
+    price: 150000, 
+    qoldiq: 536, 
+    tavsif: 'Mittiso brendidan sifatli va qulay pamperslar. Bolajonlar uchun maxsus.', 
+    image: 'https://ae01.alicdn.com/kf/H7b7e6e5a4e4a4b4e9e4e4e4e4e4e4e4e4.jpg' // Placeholder, siz o'z rasmingizni qo'shishingiz mumkin
   }
 ];
 

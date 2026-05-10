@@ -100,6 +100,23 @@ body {
   padding-bottom: 2rem;
 }
 
+/* Layout Styles */
+.layout-compact .green-card { padding: 0.75rem; margin-bottom: 0.75rem; border-radius: 8px; }
+.layout-compact .btn { padding: 0.5rem 1rem; font-size: 0.85rem; }
+.layout-compact .list-item { padding: 0.5rem; }
+
+.layout-list .products-grid { grid-template-columns: 1fr; }
+.layout-list .product-card { flex-direction: row; height: 100px; }
+.layout-list .product-image { width: 100px; height: 100px; }
+.layout-list .add-btn { right: 10px; bottom: 10px; }
+
+.layout-grid .list-item { flex-direction: column; text-align: center; gap: 0.5rem; }
+.layout-grid .list-item-avatar { margin-right: 0; }
+
+.layout-premium { --accent-color: #f59e0b; font-family: 'Outfit', sans-serif; }
+.layout-premium .green-card { border: none; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); border-radius: 24px; }
+.layout-premium .btn { border-radius: 16px; background: linear-gradient(135deg, var(--accent-color), #fbbf24); }
+
 /* Header & Typography */
 h1, h2, h3 { font-weight: 700; tracking: -0.02em; }
 h1 { font-size: 1.5rem; color: var(--text-main); text-align: center; margin-bottom: 1rem; }
