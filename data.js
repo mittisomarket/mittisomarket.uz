@@ -48,5 +48,26 @@ export const initialNews = [
     content: 'Bizning ilovamiz endi yanada qulay va chiroyli dizaynga ega bo\'ldi. Yangiliklarni kuzatib boring.', 
     date: '2026-05-10',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800'
+  },
+  { 
+    id: 'NEWS-002', 
+    title: 'Yangi mahsulotlar keldi!', 
+    content: 'iPhone 15 seriyasi va yangi MacBook noutbuklari endi sotuvda. Shoshiling, mahsulotlar soni cheklangan.', 
+    date: '2026-05-09',
+    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800'
+  },
+  { 
+    id: 'NEWS-003', 
+    title: 'Katta chegirmalar boshlandi', 
+    content: 'Mavsumiy chegirmalar doirasida barcha aksessuarlar uchun 30% gacha chegirma e\'lon qilamiz.', 
+    date: '2026-05-08',
+    image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800'
+  },
+  { 
+    id: 'NEWS-004', 
+    title: 'Yetkazib berish xizmati tekin', 
+    content: 'Endi 5 mln so\'mdan yuqori xaridlar uchun shahar bo\'ylab yetkazib berish mutlaqo bepul!', 
+    date: '2026-05-07',
+    image: 'https://images.unsplash.com/photo-1586880244406-556ebe35f282?w=800'
   }
 ];

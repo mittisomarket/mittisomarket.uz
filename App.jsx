@@ -24,6 +24,13 @@ export default function App() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Custom Events for navigation
+  useEffect(() => {
+    const handleChangeTab = (e) => setTab(e.detail);
+    window.addEventListener('changeTab', handleChangeTab);
+    return () => window.removeEventListener('changeTab', handleChangeTab);
+  }, []);
+
   // 1. Firebase-dan ma'lumotlarni yuklash (Real-time)
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "mittiso_data", "global"), (docSnap) => {
@@ -41,8 +48,31 @@ export default function App() {
         setNews(initialNews);
       }
       setLoading(false);
+    }, (error) => {
+      console.error("Firebase Snapshot Error:", error);
+      // Xatolik bo'lsa ham local ma'lumotlarni yuklash
+      setCustomers(initialCustomers);
+      setProducts(initialProducts);
+      setSales(initialSales);
+      setNews(initialNews);
+      setLoading(false);
     });
-    return () => unsub();
+
+    // Fallback: Agar 4 sekund ichida Firebase javob bermasa
+    const timer = setTimeout(() => {
+      if (loading) {
+        setCustomers(initialCustomers);
+        setProducts(initialProducts);
+        setSales(initialSales);
+        setNews(initialNews);
+        setLoading(false);
+      }
+    }, 4000);
+
+    return () => {
+      unsub();
+      clearTimeout(timer);
+    };
   }, []);
 
   // 2. Bulutga saqlash funksiyasi
@@ -97,7 +127,7 @@ export default function App() {
       </header>
 
       <main className="app-content">
-        {tab === 'ASOSIY' && <Asosiy products={products} userRole={userRole} onDelete={handleDeleteProduct} />}
+        {tab === 'ASOSIY' && <Asosiy products={products} news={news} userRole={userRole} onDelete={handleDeleteProduct} />}
         {tab === 'MIJOZLAR' && <Mijozlar customers={customers} setCustomers={setCustomers} sales={sales} userRole={userRole} />}
         {tab === 'SAVDOLAR' && <Savdolar sales={sales} products={products} customers={customers} onAddSale={(s) => setSales([s, ...sales])} userRole={userRole} />}
         {tab === 'STATISTIKA' && userRole === 'admin' && <Statistika customers={customers} sales={sales} />}
